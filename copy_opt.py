@@ -10,17 +10,28 @@ class CopyOption:
     '''
     copy file to remote user
     '''
-    def format_command(self, file_path, remote_path, remote_ip, usr, passwd):
+    def FormatCommand(self, file_path, remote_path, remote_ip, usr, passwd):
        return  "scp %s %s@%s:%s" % (file_path, usr, remote_ip, remote_path)
 
-    def scp_to(self, file_path, remote_path, remote_ip, usr, passwd):
-        cmd = self.format_command(file_path, remote_path, remote_ip, usr, passwd)
-        print ("Doing: "+cmd)
+    def Spawn(self, command):
+        return pexpect.spawn
 
-        child = pexpect.spawn(cmd)
-        child.expect("Password:")
-        child.sendline(passwd)
+    def ScpToExpect(self, child, command, passwd):
+        ret = child.expect(["password","yes/no:"], timeout = 5)
+        if(ret is 1):
+            child.sendline("yes")
+            child.expect("password:")
+            child.sendline(passwd)
+        elif (ret is 0):
+            child.sendline(passwd)
+
         child.interact()
+
+    def ScpTo(self, file_path, remote_path, remote_ip, usr, passwd):
+        cmd = self.FormatCommand(file_path, remote_path, remote_ip, usr, passwd)
+        print ("Doing: "+cmd)
+        child = self.Spawn(cmd)
+        self.ScpToExpect(child, cmd, passwd)
 
 class CopyImplement:
     def __init__(self, delegate):
@@ -28,7 +39,7 @@ class CopyImplement:
 
     def CopyFilesTo(self, file_info_list, peer_info):
         for file_info in file_info_list:
-            self.copy_delegate_.scp_to(file_info.GetSourceFilePath(), file_info.GetDestFilePath(), 
+            self.copy_delegate_.ScpTo(file_info.GetSourceFilePath(), file_info.GetDestFilePath(), 
                             peer_info.GetAddress(), peer_info.GetUserName(), peer_info.GetPassword())
 
 def main(config_path):
