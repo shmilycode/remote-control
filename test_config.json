@@ -1,0 +1,29 @@
+{
+    "file_transport_list":[
+        {
+            "source_file_path":"/usr/bin/a",
+            "dest_file_path":"/usr/local/bin/a"
+        },
+        {
+            "source_file_path":"/usr/bin/b",
+            "dest_file_path":"/usr/local/bin/b"
+        },
+        {
+            "source_file_path":"/usr/bin/c",
+            "dest_file_path":"/usr/local/bin/c"
+        }
+
+    ],
+    "peer_list":[
+        {
+            "address": "192.168.1.0",
+            "user": "root",
+            "password": "test"
+        },
+        {
+            "address": "192.168.1.1",
+            "user": "root",
+            "password": "test"
+        }
+    ]
+}
