@@ -9,23 +9,20 @@ class Mockpexpect:
         self.pattern_list_ = pattern_list
         self.send_line_list_ = []
 
-    def expect(self, pattern, timeout):
+    def expect(self, pattern, timeout=0):
         target_pattern = "you can't match me, haha"
         if(len(self.pattern_list_) > 0):
             target_pattern = self.pattern_list_[0]
             self.pattern_list_ = self.pattern_list_[1:]
-        print '\n'+target_pattern
 
         if(isinstance(pattern, list) is False):
-            print "isinstance is false"
             if(pattern == target_pattern):
                 return 0
             else:
                 return -1
-        print target_pattern + "".join(pattern) + str(pattern.count(target_pattern))
-        if(pattern.count(target_pattern) == 0):
+        if(target_pattern not in pattern):
             return -1
-        return pattern.index(target_patern)        
+        return pattern.index(target_pattern)        
         
     def sendline(self, line):
         self.send_line_list_.append(line)
@@ -47,15 +44,24 @@ class CopyOptionTest(unittest.TestCase):
         result_2 = co.FormatCommand("/usr/bin/iperf", "/usr/local/bin/iperf", "192.168.1.1", "walle", "")
         self.assertEqual(result_2, "scp /usr/bin/iperf walle@192.168.1.1:/usr/local/bin/iperf")
 
-    def test_ScpToExpect(self):
+    def test_ScpToExpect1(self):
         cmd = "scp /usr/bin/iperf walle@192.168.1.1:/usr/local/bin/iperf"
         passwd = "12345"
 
-        child = Mockpexpect(["yes/no", "password"])
+        child = Mockpexpect(["yes/no:", "password"])
         co = CopyOption()
         co.ScpToExpect(child, cmd, passwd)
 
         right_result = ["yes", passwd]
+        right_result.sort()
+        right_result = "".join(right_result)
+        self.assertEqual(right_result, child.GetAllLine())
+
+        child = Mockpexpect(["password"])
+        co = CopyOption()
+        co.ScpToExpect(child, cmd, passwd)
+
+        right_result = [passwd]
         right_result.sort()
         right_result = "".join(right_result)
         self.assertEqual(right_result, child.GetAllLine())
