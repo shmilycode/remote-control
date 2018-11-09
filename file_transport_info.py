@@ -17,21 +17,23 @@ file infomation list like below:
 '''
 
 class FileTransportInfo:
-    def __init__(self, info):
-        self.info = info
+    def __init__(self, source_file_path, dest_file_path):
+        self.source_file_path_ = source_file_path
+        self.dest_file_path_ = dest_file_path
 
     def GetSourceFilePath(self):
-        return self.info[SOURCE_FILE_PATH]
+        return self.source_file_path_
 
     def GetDestFilePath(self):
-        return self.info[DEST_FILE_PATH]
+        return self.dest_file_path_
 
 class FileTransportManager:
     def __init__(self, file_list):
         self.file_info_list = []
         for file_info in file_list:
-            info = FileTransportInfo(file_info)
-            self.file_info_list.append(info);
+            info = FileTransportInfo(file_info[SOURCE_FILE_PATH], 
+                                     file_info[DEST_FILE_PATH])
+            self.file_info_list.append(info)
  
     
     def GetFileTransportList(self):
