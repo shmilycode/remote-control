@@ -5,6 +5,7 @@ import os,string,sys
 FILE_TRANSPORT_STR = "file_transport_list"
 PEER_LIST_STR = "peer_list"
 IP_ADDRESS = "ip"
+COMMANDS = "commands"
 
 class ScriptConfig:
     def __init__(self):
@@ -31,3 +32,7 @@ class ScriptConfig:
     def GetAdress(self):
         self.SCHECK(self.start_)
         return self.config_datas_[IP_ADDRESS]
+    
+    def GetCommandsData(self):
+        self.SCHECK(self.start_)
+        return self.config_datas_[COMMANDS]

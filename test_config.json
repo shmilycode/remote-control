@@ -1,29 +1,28 @@
 {
-    "file_transport_list":[
-        {
-            "source_file_path":"/usr/bin/a",
-            "dest_file_path":"/usr/local/bin/a"
-        },
-        {
-            "source_file_path":"/usr/bin/b",
-            "dest_file_path":"/usr/local/bin/b"
-        },
-        {
-            "source_file_path":"/usr/bin/c",
-            "dest_file_path":"/usr/local/bin/c"
-        }
-
-    ],
     "peer_list":[
         {
-            "address": "192.168.1.0",
+            "address": "172.18.90.50",
             "user": "root",
-            "password": "test"
+            "password": "test0000"
         },
         {
-            "address": "192.168.1.1",
-            "user": "root",
-            "password": "test"
+            "address": "172.18.90.240",
+            "user": "walle",
+            "password": "shmily"
         }
+    ],
+    "file_transport_list":[
+        {
+            "source_file_path":"/home/walle/Code/copy_opt.py",
+            "dest_file_path":"/tmp/copy_opt.py"
+        },
+        {
+            "source_file_path":"./walle_test",
+            "dest_file_path":"/usr/local/bin/walle_test"
+        }
+    ],
+    "commands":[
+        "/bin/ls -al",
+        "ps -aux"
     ]
 }
