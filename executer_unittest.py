@@ -41,7 +41,7 @@ class CommandExecuterTest(unittest.TestCase):
 class MockExecuter:
   def __init__(self):
     self.command_list_ = []
-  def Run(self, command_line, remote_ip, user, password):
+  def Run(self, command_line, remote_ip, user, password, expect_result):
     cmd = "ssh %s@%s \"%s\"" % (user, remote_ip, command_line)
     self.command_list_.append(cmd)
 
@@ -53,8 +53,8 @@ class MockExecuter:
 
 class ExecuterMangerTest(unittest.TestCase):
   def test_RunAll(self):
-    command1 = CommandLine("ls")
-    command2 = CommandLine("/tmp/udp_test args")
+    command1 = CommandLine("ls", "")
+    command2 = CommandLine("/tmp/udp_test args", "")
     command_list = [command1, command2]
     peer_info = PeerInfo("192.168.0.1", "walle", "123456")
     executer = MockExecuter()
