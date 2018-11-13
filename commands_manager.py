@@ -1,22 +1,22 @@
 import string
 
 class CommandLine:
-  def __init__(self, command_line, expect_result):
+  def __init__(self, command_line, run_background):
     self.cmd_line_ = command_line
-    self.cmd_expect_result_ = expect_result
+    self.run_background_ = run_background 
   
   def GetCommandLine(self):
     return self.cmd_line_
 
-  def GetExpectResult(self):
-    return self.cmd_expect_result_
+  def IsRunBackground(self):
+    return self.run_background_
 
 class CommandManager:
   def __init__(self, commands):
     self.command_list_ = []
     for command in commands:
       self.command_list_.append(CommandLine(command["command"],
-                                             command["expect_result"]))
+                                             command["background"]))
   
   def GetCommandList(self):
     return self.command_list_

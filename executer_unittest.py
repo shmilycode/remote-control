@@ -53,8 +53,8 @@ class MockExecuter:
 
 class ExecuterMangerTest(unittest.TestCase):
   def test_RunAll(self):
-    command1 = CommandLine("ls", "")
-    command2 = CommandLine("/tmp/udp_test args", "")
+    command1 = CommandLine("ls", False)
+    command2 = CommandLine("/tmp/udp_test args", False)
     command_list = [command1, command2]
     peer_info = PeerInfo("192.168.0.1", "walle", "123456")
     executer = MockExecuter()

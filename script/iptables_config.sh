@@ -1,5 +1,4 @@
 #!/bin/sh
-
 #####################################
 # Get 1 parameter
 # 1. The port to enable input, output
@@ -13,3 +12,5 @@ iptables -A INPUT -p udp -m udp --dport $PORT -j ACCEPT
 
 iptables-save > /dev/null
 iptables -L -n | grep $PORT
+
+date '+%s.%N'

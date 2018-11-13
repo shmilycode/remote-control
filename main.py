@@ -35,28 +35,38 @@ def RunScript(peer_manager, command_manager):
 
   return Finish("RunScript")
 
-def main(config_path):
+def LoadConfig(config_path):
   config = ScriptConfig()
   config.ParseConfig(config_path)
+  return config
+
+def GetPeers(config):
   '''
   Get peers infomations
   '''
   peer_info_data = config.GetPeerInfoData()
   peer_manager = PeerInfoManager(peer_info_data)
+  return peer_manager
+
+
+def main(config_path, need_deploy):
+
+  config = LoadConfig(config_path)
+  peer_manager = GetPeers(config)
 
   '''
   Get file list
   '''
   file_transport_manager = FileTransportManager(config.GetFileTransportData())
-
-  '''
-  Deploy
-  '''
-  ret = Deploy(peer_manager, file_transport_manager)
-
-  if(ret is False):
-    print "Finish Deploy, and exit now!"
-    return;
+  if(need_deploy == True):
+    '''
+    Deploy
+    '''
+    ret = Deploy(peer_manager, file_transport_manager)
+  
+    if(ret is False):
+      print "Finish Deploy, and exit now!"
+      return;
 
   '''
   Run script
@@ -65,11 +75,36 @@ def main(config_path):
   command_manager = CommandManager(commands_data)
   RunScript(peer_manager, command_manager)
 
+def run_command(config_path, cmd, run_in_background):
+  config = LoadConfig(config_path)
+  peer_manager = GetPeers(config)
+  '''
+  Run command
+  '''
+  commands_data = [{"command":cmd, "background":run_in_background}]
+  command_manager = CommandManager(commands_data)
+  return RunScript(peer_manager, command_manager)
+
+def upload_log(config_path):
+  upload_cmd = "/tmp/upload_log.sh http://172.18.91.173/Code/upload/upload_file.php userfile mlan0"
+  kill_cmd = "/tmp/kill_script.sh iperf"
+  ret = run_command(config_path, kill_cmd, "")
+  if(ret is True):
+    run_command(config_path, upload_cmd, "")
 
 if __name__ == "__main__":
     parse = argparse.ArgumentParser(description = 'manual to this script')
-    parse.add_argument('--config', type=str, default=None)
+    parse.add_argument('--config', type=str, default=None, help="config file path")
+    parse.add_argument('--deploy', type=bool, default=True, help="is need to deploy the script")
+    parse.add_argument('--run', type=str, default=None, help="run commands")
+    parse.add_argument('--background', type=bool, default=False, help="is need to run in background")
+    parse.add_argument('--upload', type=bool, default=False, help="upload the log")
     argv = parse.parse_args()
-    main(argv.config)
-
-
+    if(argv.config is None):
+      parse.print_help()
+    elif(argv.run):
+      run_command(argv.config, argv.run, argv.background)
+    elif(argv.upload):
+      upload_log(argv.config)
+    else:
+      main(argv.config, argv.deploy)

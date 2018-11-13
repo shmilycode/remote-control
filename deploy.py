@@ -24,7 +24,7 @@ class CopyOption:
         elif (ret is 0):
             child.sendline(passwd)
 
-        child.interact()
+        child.expect("100%")
 
     def ScpTo(self, file_path, remote_path, remote_ip, usr, passwd):
         cmd = self.FormatCommand(file_path, remote_path, remote_ip, usr)
