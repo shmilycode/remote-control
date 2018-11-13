@@ -57,13 +57,14 @@ def main(config_path, need_deploy):
   '''
   Get file list
   '''
-  file_transport_manager = FileTransportManager(config.GetFileTransportData())
+  print need_deploy
   if(need_deploy == True):
+    file_transport_manager = FileTransportManager(config.GetFileTransportData())
     '''
     Deploy
     '''
     ret = Deploy(peer_manager, file_transport_manager)
-  
+
     if(ret is False):
       print "Finish Deploy, and exit now!"
       return;
@@ -85,8 +86,8 @@ def run_command(config_path, cmd, run_in_background):
   command_manager = CommandManager(commands_data)
   return RunScript(peer_manager, command_manager)
 
-def upload_log(config_path):
-  upload_cmd = "/tmp/upload_log.sh http://172.18.91.173/Code/upload/upload_file.php userfile mlan0"
+def upload_log(config_path, suffix):
+  upload_cmd = "/tmp/upload_log.sh http://172.18.91.173/Code/upload/upload_file.php userfile mlan0 %s" % (suffix)
   kill_cmd = "/tmp/kill_script.sh iperf"
   ret = run_command(config_path, kill_cmd, "")
   if(ret is True):
@@ -95,16 +96,19 @@ def upload_log(config_path):
 if __name__ == "__main__":
     parse = argparse.ArgumentParser(description = 'manual to this script')
     parse.add_argument('--config', type=str, default=None, help="config file path")
-    parse.add_argument('--deploy', type=bool, default=True, help="is need to deploy the script")
     parse.add_argument('--run', type=str, default=None, help="run commands")
-    parse.add_argument('--background', type=bool, default=False, help="is need to run in background")
-    parse.add_argument('--upload', type=bool, default=False, help="upload the log")
+    parse.add_argument('-background', action="store_true", help="is need to run in background")
+    parse.add_argument('-upload_udp', action="store_true", help="upload the udp log")
+    parse.add_argument('-upload_multicast', action="store_true", help="upload the multicast log")
+    parse.add_argument('-deploy', action="store_true", help="is need to deploy the script")
     argv = parse.parse_args()
     if(argv.config is None):
       parse.print_help()
     elif(argv.run):
       run_command(argv.config, argv.run, argv.background)
-    elif(argv.upload):
-      upload_log(argv.config)
+    elif(argv.upload_udp == True):
+      upload_log(argv.config, "_udp_server.log")
+    elif(argv.upload_multicast == True):
+      upload_log(argv.config, "_multicast_server.log")
     else:
       main(argv.config, argv.deploy)

@@ -1,0 +1,45 @@
+{
+    "peer_list":[
+        {
+            "address": "172.18.90.247",
+            "user": "root",
+            "password": "test0000"
+        }
+   ],
+    "file_transport_list":[
+        {
+            "source_file_path":"/mnt/hgfs/code/remote-control/script/iperf",
+            "dest_file_path":"/tmp/iperf"
+        },
+        {
+            "source_file_path":"/mnt/hgfs/code/remote-control/script/iperf_multicast_server.sh",
+            "dest_file_path":"/tmp/iperf_multicast_server.sh"
+        },
+        {
+            "source_file_path":"/mnt/hgfs/code/remote-control/script/iperf_udp_server.sh",
+            "dest_file_path":"/tmp/iperf_udp_server.sh"
+        },        
+        {
+            "source_file_path":"/mnt/hgfs/code/remote-control/script/iptables_config.sh",
+            "dest_file_path":"/tmp/iptables_config.sh"
+        },        
+        {
+            "source_file_path":"/mnt/hgfs/code/remote-control/script/upload_log.sh",
+            "dest_file_path":"/tmp/upload_log.sh"
+        },
+        {
+            "source_file_path":"/mnt/hgfs/code/remote-control/script/warn.txt",
+            "dest_file_path":"/tmp/warn.txt"
+        },
+        {
+            "source_file_path":"/mnt/hgfs/code/remote-control/script/kill_script.sh",
+            "dest_file_path":"/tmp/kill_script.sh"
+        }
+ 
+   ],
+    "commands":[
+        {"command":"cat /tmp/warn.txt", "background": false},
+        {"command":"/tmp/iptables_config.sh 1900", "background": false},
+        {"command":"/tmp/iperf_multicast_server.sh /tmp/ 239.255.255.252 1900 mlan0", "background": true}
+   ]
+}

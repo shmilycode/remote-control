@@ -17,9 +17,12 @@ FORM_NAME=$2
 #ETHER=eth0
 ETHER=$3
 
+#SUFFIX=_udp_server.log
+SUFFIX=$4
+
 #ip_addr=$(ifconfig $ETHER | grep "inet addr" | awk '{ print $2}' | awk -F: '{print $2}')
 ip_addr=$(ifconfig $ETHER | grep "inet " | awk 'NR==1 {print $2}')
-LOG_FILE='/tmp/'$ip_addr"_udp_server.log"
+LOG_FILE='/tmp/'$ip_addr$SUFFIX
 echo "Upload log "$LOG_FILE
 
 sync

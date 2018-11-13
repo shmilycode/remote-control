@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
   for peer_info in peer_manager.GetPeerInfoList():
 #    cmd = "iperf -c %s -u -b 100m -t 120 -t 120 -i 1 -p %d 1>/dev/null &" % (peer_info.GetAddress(), argv.port)
-    cmd = "iperf -c %s -u -b 100m -t 120 -t 60 -i 1 -p %d &" % (peer_info.GetAddress(), argv.port)
+    cmd = "iperf -c %s -u -b 5m -t 60 -i 1 -p %d &" % (peer_info.GetAddress(), argv.port)
     print "Running "+cmd
     os.system(cmd)
 

@@ -2,10 +2,10 @@
 
 #####################
 # Get 2 parameter
-# 1. Log filename to save log
-# 2. The iperf path, default in /usr/bin
-# 3. multicast address
-# 4. The listening port
+# 1. The iperf path, default in /usr/bin
+# 2. multicast address
+# 3. The listening port
+# 4. Ehter name
 #####################
 
 #IPERF_PATH="/tmp/network_test/"
@@ -19,9 +19,9 @@ ETHER=$4
 
 #ip_addr=$(ifconfig $ETHER | grep "inet " | awk '{ print $2}' | awk -F: '{print $2}')
 ip_addr=$(ifconfig $ETHER | grep "inet " | awk 'NR==1 {print $2}')
-LOG_FILE=$ip_addr"_udp_server.log"
+LOG_FILE="/tmp/"$ip_addr"_multicast_server.log"
 
 echo "Save log to "$LOG_FILE
 
 #listen for iperf
-nohup $IPERF_PATH"/iperf" -s -u -B $MULTICAST_ADDRESS -i 1 -p $LISTEN_PORT | tee $LOG_FILE &
+nohup $IPERF_PATH"/iperf" -s -u -B $MULTICAST_ADDRESS -i 1 -p $LISTEN_PORT > $LOG_FILE &

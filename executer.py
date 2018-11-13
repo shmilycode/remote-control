@@ -22,9 +22,9 @@ class CommandExecuter:
         child.sendline(password)
     
     if(run_background):
+      #Refer to https://github.com/pexpect/pexpect/issues/507
       child.sendline('exit')
     else:
-#      child.expect(pexpect.EOF)
       child.interact()
 
 
