@@ -23,7 +23,8 @@ class CommandExecuter:
     
     if(run_background):
       #Refer to https://github.com/pexpect/pexpect/issues/507
-      child.sendline('exit')
+      #child.sendline('exit')
+      child.expect(pexpect.EOF)
     else:
       child.interact()
 
